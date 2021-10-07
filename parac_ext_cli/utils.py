@@ -1,5 +1,5 @@
 # coding=utf-8
-""" Utilities for the parac_cli module """
+""" Utilities for the parac_ext_cli module """
 import os
 import shutil
 from os import PathLike

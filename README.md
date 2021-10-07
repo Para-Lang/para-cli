@@ -2,7 +2,7 @@
 
 # Para-C CLI
 ![Build](https://img.shields.io/github/workflow/status/Para-C/Para-C/CodeQL?logo=github)
-[![PyPI version](https://badge.fury.io/py/parac-cli.svg)](https://badge.fury.io/py/parac-cli)
+[![PyPI version](https://badge.fury.io/py/parac-ext-cli.svg)](https://badge.fury.io/py/parac-ext-cli)
 [![Documentation Status](https://readthedocs.org/projects/para-c/badge/?version=latest)](https://para-c.readthedocs.io/en/latest/?badge=latest)
 ![License](https://img.shields.io/github/license/Para-C/Para-C-CLI?color=cyan)
 ![Test workflow](https://github.com/Luna-Klatzer/Para-C-CLI/actions/workflows/python-test.yml/badge.svg)
@@ -10,7 +10,9 @@
 
 Command Line Interface Implementation for the Para-C programming language
 
-*For proper documentation and info on Para-C visit the main repo [here](https://github.com/Para-C/Para-C)*
+*For proper documentation and info on Para-C visit the main repo [here](https://github.com/Para-C/Para-C). 
+This also includes issues or requesting changes. These should be done on the main branch, while the issues
+here will be maintainers-only*
 
 ## Commands
 *Commands displayed are mostly only partly implemented*
@@ -27,12 +29,12 @@ Command Line Interface Implementation for the Para-C programming language
 ## Installation
 
 ```bash
-python3 -m pip install -U parac-cli
+python3 -m pip install -U parac-ext-cli
 ```
 
 *With specific version*:
 ```bash
-python3 -m pip install -U parac-cli==version
+python3 -m pip install -U parac-ext-cli==version
 ```
 
 ## Copyright and License

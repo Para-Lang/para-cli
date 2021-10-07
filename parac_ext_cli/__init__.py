@@ -24,9 +24,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__title__ = "parac"
-__description__ = "Para-C Module"
-__url__ = "https://github.com/Para-C/Para-C/"
+__title__ = "parac_ext_cli"
+__description__ = "Command Line Interface Implementation for the Para-C " \
+                  "programming language"
+__url__ = "https://github.com/Para-C/Para-C-CLI/"
 __author__ = "Luna Klatzer"
 __author_email__ = "luna.klatzer@gmail.com"
 __license__ = "GNU GENERAL PUBLIC LICENSE v3.0"
