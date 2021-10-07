@@ -24,7 +24,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="GNU GENERAL PUBLIC LICENSE v3.0",
-    url="https://github.com/Luna-Klatzer/Para-C/",
+    url="https://github.com/Para-C/Para-C-CLI/",
     project_urls={
         "Issue-Page": "https://github.com/Luna-Klatzer/Para-C-CLI/issues/",
         "Changelog": "https://github.com/Luna-Klatzer/Para-C-CLI/releases"
