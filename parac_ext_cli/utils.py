@@ -8,7 +8,7 @@ from typing import Union, Tuple
 
 try:
     import parac
-except Exception as e:
+except ImportError as e:
     raise ImportError("Failed to locate parent module 'parac'") from e
 else:
     from parac import UserInputError

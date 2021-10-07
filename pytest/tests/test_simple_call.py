@@ -2,7 +2,7 @@
 """ Simple testing calling the Para-C CLI """
 try:
     import parac
-except Exception as e:
+except ImportError as e:
     raise ImportError("Failed to locate parent module 'parac'") from e
 
 from parac_ext_cli import cli_run_output_dir_validation, cli_create_process
