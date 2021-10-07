@@ -1,5 +1,6 @@
-![para-c](img/parac-banner.png)
+![](img/parac-banner.png)
 
+# Para-C CLI
 ![Build](https://img.shields.io/github/workflow/status/Para-C/Para-C/CodeQL?logo=github)
 [![PyPI version](https://badge.fury.io/py/parac-cli.svg)](https://badge.fury.io/py/parac-cli)
 [![Documentation Status](https://readthedocs.org/projects/para-c/badge/?version=latest)](https://para-c.readthedocs.io/en/latest/?badge=latest)
@@ -7,7 +8,6 @@
 ![Test workflow](https://github.com/Luna-Klatzer/Para-C-CLI/actions/workflows/python-test.yml/badge.svg)
 [![codecov](https://codecov.io/gh/Para-C/Para-C-CLI/branch/main/graph/badge.svg?token=8I9XL1E7QR)](https://codecov.io/gh/Para-C/Para-C)
 
-# Para-C CLI
 Command Line Interface Implementation for the Para-C programming language
 
 *For proper documentation and info on Para-C visit the main repo [here](https://github.com/Para-C/Para-C)*
