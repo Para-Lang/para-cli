@@ -1,0 +1,10 @@
+*.log
+**/.idea
+**/venv/
+**/cmake-build-debug
+*.java
+**/gen
+**/build
+**/dist
+**/Output
+**/__pycache__

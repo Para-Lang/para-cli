@@ -37,7 +37,6 @@ __all__ = [
     'ParacCLI'
 ]
 
-logger: Optional[None, logging.Logger] = None
 colorama.init(autoreset=True)
 
 
@@ -371,10 +370,7 @@ class ParacCLI:
         if not RUNTIME_COMPILER.log_initialised:
             RUNTIME_COMPILER.init_logging_session(print_banner=False)
 
-        global logger
-        logger = RUNTIME_COMPILER.logger
-
-        logger.info(
+        RUNTIME_COMPILER.logger.info(
             'Reinitialising' if is_c_compiler_ready() else 'Initialising'
             " Para-C Compiler"
         )
@@ -477,9 +473,6 @@ class ParacCLI:
                 banner_name="Syntax Check"
             )
 
-        global logger
-        logger = RUNTIME_COMPILER.logger
-
         p = create_basic_process(file, encoding, log)
 
         # Exception won't be reraised and directly logged to the console
@@ -493,23 +486,23 @@ class ParacCLI:
 
         errors = RUNTIME_COMPILER.stream_handler.errors
         warnings = RUNTIME_COMPILER.stream_handler.warnings
-        if errors > 0:
+        if errors == 0:
             print_result_banner("Syntax Check")
-            logger.info(
+            console().print(
                 "[bold bright_cyan]"
                 "Syntax check finished successfully"
                 "[/bold bright_cyan]"
             )
         else:
             print_result_banner("Syntax Check", success=False)
-            logger.info(
+            console().print(
                 "[bold yellow]"
                 "Syntax check detected "
                 f"{'an error' if errors == 1 else 'multiple errors' }"
                 "[/bold yellow]"
             )
 
-        logger.info(
+        console().print(
             f"[bold yellow]{warnings} Warnings [/bold yellow]"
             f"[bold red]{errors} Errors[/bold red]"
         )
