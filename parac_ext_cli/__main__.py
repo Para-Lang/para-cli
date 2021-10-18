@@ -3,7 +3,7 @@
 import time
 import asyncio
 from pathlib import Path
-from typing import Union
+from typing import Union, Optional
 import click
 import colorama
 import logging
@@ -37,7 +37,7 @@ __all__ = [
     'ParacCLI'
 ]
 
-logger = logging.getLogger(__name__)
+logger: Optional[None, logging.Logger] = None
 colorama.init(autoreset=True)
 
 
@@ -370,6 +370,10 @@ class ParacCLI:
         """ Initialises the C compiler """
         if not RUNTIME_COMPILER.log_initialised:
             RUNTIME_COMPILER.init_logging_session(print_banner=False)
+
+        global logger
+        logger = RUNTIME_COMPILER.logger
+
         logger.info(
             'Reinitialising' if is_c_compiler_ready() else 'Initialising'
             " Para-C Compiler"
@@ -472,6 +476,9 @@ class ParacCLI:
                 level=logging.DEBUG if debug else logging.INFO,
                 banner_name="Syntax Check"
             )
+
+        global logger
+        logger = RUNTIME_COMPILER.logger
 
         p = create_basic_process(file, encoding, log)
 
