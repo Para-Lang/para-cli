@@ -23,5 +23,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved CLI from the main repo to its independent repo. Changes will appear
   from this version on here, as well as on the main repo.
 
-[unreleased]: https://github.com/Para-C/Para-C/compare/v0.1.dev5...dev
+[unreleased]: https://github.com/Para-C/Para-C-CLI/compare/v0.1.dev5...dev
 [v0.1.dev5]: https://github.com/Para-C/Para-C-CLI/tag/v0.1.dev5
