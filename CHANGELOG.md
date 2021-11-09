@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+- Deleted the file `entry_cli.py` in the main repo, and moved the function
+  here. This function can now be called using `cli_run()`; This means that
+  the main repo and module can only be run as module, and the CLI is a
+  fully separate entity.
 
 ### Removed
 

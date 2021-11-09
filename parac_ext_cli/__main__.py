@@ -3,7 +3,7 @@
 import time
 import asyncio
 from pathlib import Path
-from typing import Union, Optional
+from typing import Union, Optional, NoReturn
 import click
 import colorama
 import logging
@@ -29,6 +29,7 @@ else:
 from .utils import cli_run_output_dir_validation, cli_resolve_path
 
 __all__ = [
+    'cli_run',
     'cli_create_process',
     'cli_run_output_dir_validation',
     'cli_run_process_with_logging',
@@ -111,7 +112,7 @@ async def cli_run_process_with_logging(
                 finished_process = end
                 progress.update(main_task, advance=p-current_progress)
             else:
-                logger.log(level=level, msg=status)
+                RUNTIME_COMPILER.logger.log(level=level, msg=status)
                 progress.update(main_task, advance=p-current_progress)
                 current_progress = p
 
@@ -506,3 +507,13 @@ class ParacCLI:
             f"[bold yellow]{warnings} Warnings [/bold yellow]"
             f"[bold red]{errors} Errors[/bold red]"
         )
+
+
+def cli_run() -> NoReturn:
+    """
+    Runs the cli and parses the input args.
+
+    This function will **not** return and close the application itself.
+    """
+    init_rich_console()
+    cli_entry()
