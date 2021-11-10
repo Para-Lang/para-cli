@@ -1,11 +1,15 @@
 ![](img/parac-banner.png)
 
 # Para-C CLI
-![Build](https://img.shields.io/github/workflow/status/Para-C/Para-C/CodeQL?logo=github)
+[![Build](https://img.shields.io/github/workflow/status/Para-C/Para-C/CodeQL?logo=github)](https://github.com/Para-C/Para-C-CLI/actions/workflows/codeql-analysis.yml)
+[![Open Para-C issues](https://img.shields.io/github/issues/Para-C/Para-C)](https://github.com/Para-C/Para-C/issues)
 [![PyPI version](https://badge.fury.io/py/parac-ext-cli.svg)](https://badge.fury.io/py/parac-ext-cli)
 [![Documentation Status](https://readthedocs.org/projects/para-c/badge/?version=latest)](https://para-c.readthedocs.io/en/latest/?badge=latest)
-![License](https://img.shields.io/github/license/Para-C/Para-C-CLI?color=cyan)
-![Test workflow](https://github.com/Luna-Klatzer/Para-C-CLI/actions/workflows/python-test.yml/badge.svg)
+[![License](https://img.shields.io/github/license/Para-C/Para-C-CLI?color=cyan)](https://github.com/Para-C/Para-C-CLI/blob/main/LICENSE)
+
+[![Windows Test workflow](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-win.yml/badge.svg)](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-win.yml)
+[![MacOS Test workflow](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-macos.yml/badge.svg)](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-macos.yml)
+[![Linux Test & Coverage workflow](https://github.com/Para-C/Para-C-CLI/actions/workflows/cov-pytest.yml/badge.svg)](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-linux.yml)
 [![codecov](https://codecov.io/gh/Para-C/Para-C-CLI/branch/main/graph/badge.svg?token=8I9XL1E7QR)](https://codecov.io/gh/Para-C/Para-C)
 
 Command Line Interface Implementation for the Para-C programming language

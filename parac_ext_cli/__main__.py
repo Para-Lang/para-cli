@@ -3,7 +3,7 @@
 import time
 import asyncio
 from pathlib import Path
-from typing import Union
+from typing import Union, Optional, NoReturn
 import click
 import colorama
 import logging
@@ -16,7 +16,7 @@ except ImportError as e:
     raise ImportError("Failed to locate parent module 'parac'") from e
 else:
     from parac import RUNTIME_COMPILER
-    from parac.exceptions import InvalidArgumentsError
+    from parac.exceptions import InvalidArgumentsError, FailedToProcessError
     from parac.util import (cli_keep_open_callback, escape_ansi_args,
                             requires_init, is_c_compiler_ready,
                             cli_initialise_c_compiler, abortable)
@@ -29,6 +29,7 @@ else:
 from .utils import cli_run_output_dir_validation, cli_resolve_path
 
 __all__ = [
+    'cli_run',
     'cli_create_process',
     'cli_run_output_dir_validation',
     'cli_run_process_with_logging',
@@ -37,7 +38,6 @@ __all__ = [
     'ParacCLI'
 ]
 
-logger = logging.getLogger(__name__)
 colorama.init(autoreset=True)
 
 
@@ -112,7 +112,7 @@ async def cli_run_process_with_logging(
                 finished_process = end
                 progress.update(main_task, advance=p-current_progress)
             else:
-                logger.log(level=level, msg=status)
+                RUNTIME_COMPILER.logger.log(level=level, msg=status)
                 progress.update(main_task, advance=p-current_progress)
                 current_progress = p
 
@@ -370,7 +370,8 @@ class ParacCLI:
         """ Initialises the C compiler """
         if not RUNTIME_COMPILER.log_initialised:
             RUNTIME_COMPILER.init_logging_session(print_banner=False)
-        logger.info(
+
+        RUNTIME_COMPILER.logger.info(
             'Reinitialising' if is_c_compiler_ready() else 'Initialising'
             " Para-C Compiler"
         )
@@ -476,33 +477,43 @@ class ParacCLI:
         p = create_basic_process(file, encoding, log)
 
         # Exception won't be reraised and directly logged to the console
-        result = asyncio.run(p.validate_syntax(log_errors_and_warnings=True))
+        try:
+            result = asyncio.run(
+                p.validate_syntax(log_errors_and_warnings=True)
+            )
+        # FailedToProcess -> SyntaxError
+        except FailedToProcessError:
+            ...  # ignoring as the following items will handle the errors
 
         errors = RUNTIME_COMPILER.stream_handler.errors
         warnings = RUNTIME_COMPILER.stream_handler.warnings
-        if result is True:
+        if errors == 0:
             print_result_banner("Syntax Check")
-            logger.info(
+            console().print(
                 "[bold bright_cyan]"
                 "Syntax check finished successfully"
                 "[/bold bright_cyan]"
             )
         else:
             print_result_banner("Syntax Check", success=False)
-            logger.info(
+            console().print(
                 "[bold yellow]"
                 "Syntax check detected "
                 f"{'an error' if errors == 1 else 'multiple errors' }"
                 "[/bold yellow]"
             )
 
-        logger.info(
-            "[bold yellow]"
-            f"Warnings: {warnings}"
-            "[/bold yellow]"
+        console().print(
+            f"[bold yellow]{warnings} Warnings [/bold yellow]"
+            f"[bold red]{errors} Errors[/bold red]"
         )
-        logger.info(
-            "[bold red]"
-            f"Errors: {errors}"
-            "[/bold red]"
-        )
+
+
+def cli_run() -> NoReturn:
+    """
+    Runs the cli and parses the input args.
+
+    This function will **not** return and close the application itself.
+    """
+    init_rich_console()
+    cli_entry()
