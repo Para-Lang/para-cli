@@ -26,12 +26,12 @@ else:
     from parac.compiler import (ProgramCompilationProcess,
                                 BasicProcess, FinishedProcess)
 
-from .utils import cli_run_output_dir_validation, cli_resolve_path
+from .utils import cli_setup_output_dirs, cli_resolve_path
 
 __all__ = [
     'cli_run',
     'cli_create_process',
-    'cli_run_output_dir_validation',
+    'cli_setup_output_dirs',
     'cli_run_process_with_logging',
     'cli_entry',
     'cli_parac_compile',
@@ -411,7 +411,7 @@ class ParacCLI:
         # the case a prompt will appear asking the user to either answer yes
         # or no to overwriting it. If it's false a new directory with the same
         # name but a number added will be created e.g. build_2
-        build_path, dist_path = cli_run_output_dir_validation(
+        build_path, dist_path = cli_setup_output_dirs(
             overwrite_build,
             overwrite_dist
         )

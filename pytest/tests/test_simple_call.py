@@ -5,14 +5,14 @@ try:
 except ImportError as e:
     raise ImportError("Failed to locate parent module 'parac'") from e
 
-from parac_ext_cli import cli_run_output_dir_validation, cli_create_process
+from parac_ext_cli import cli_setup_output_dirs, cli_create_process
 from pathlib import Path
 import pytest
 import os
 from parac import (FileNotFoundError as ParaFileNotFoundError,
                    SEPARATOR as SEP, UserInputError)
 from parac.logging import set_avoid_print_banner_overwrite
-from . import (add_folder, overwrite_builtin_input, reset_input,
+from . import (add_folder, overwrite_builtin_func_input, reset_input,
                create_test_file, BASE_TEST_PATH)
 
 LOG_PATH = 'para.log'
@@ -36,8 +36,8 @@ class TestCLISetup:
         add_folder("build")
         create_test_file("build", "example.txt")
 
-        overwrite_builtin_input('True')
-        cli_run_output_dir_validation(False, True, BASE_TEST_PATH)
+        overwrite_builtin_func_input('True')
+        cli_setup_output_dirs(False, True, BASE_TEST_PATH)
         assert not os.path.exists(
             _ := str(BASE_TEST_PATH / "build_2" / "example.txt")
         ), _
@@ -47,8 +47,8 @@ class TestCLISetup:
 
         create_test_file("build", "example.txt")
 
-        overwrite_builtin_input('False')
-        cli_run_output_dir_validation(True, True, BASE_TEST_PATH)
+        overwrite_builtin_func_input('False')
+        cli_setup_output_dirs(True, True, BASE_TEST_PATH)
         assert not os.path.exists(
             _ := str(BASE_TEST_PATH / "build" / "example.txt")
         ), _
@@ -58,8 +58,8 @@ class TestCLISetup:
         add_folder("dist")
         create_test_file("dist", "example.txt")
 
-        overwrite_builtin_input('True')  # Overwrite data -> True
-        cli_run_output_dir_validation(True, False, BASE_TEST_PATH)
+        overwrite_builtin_func_input('True')  # Overwrite data -> True
+        cli_setup_output_dirs(True, False, BASE_TEST_PATH)
         assert not os.path.exists(
             _ := str(BASE_TEST_PATH / "dist_2" / "example.txt")
         ), _
@@ -68,8 +68,8 @@ class TestCLISetup:
         ), _
 
         create_test_file("dist", "example.txt")
-        overwrite_builtin_input('False')  # Overwrite data -> False
-        cli_run_output_dir_validation(True, True, BASE_TEST_PATH)
+        overwrite_builtin_func_input('False')  # Overwrite data -> False
+        cli_setup_output_dirs(True, True, BASE_TEST_PATH)
         assert not os.path.exists(
             _ := str(BASE_TEST_PATH / "dist" / "example.txt")
         ), _

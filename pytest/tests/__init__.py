@@ -34,7 +34,7 @@ def resolve_test_path() -> Path:
 BASE_TEST_PATH = resolve_test_path()
 
 
-def overwrite_builtin_input(overwrite: str) -> None:
+def overwrite_builtin_func_input(overwrite: str) -> None:
     """ Overwrites the input with a lambda that returns the specified value """
     getattr(parac.logging, 'output_console').input =\
         lambda *args, **kwargs: overwrite

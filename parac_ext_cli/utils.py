@@ -17,8 +17,8 @@ else:
 
 __all__ = [
     "cli_err_dir_already_exists",
-    "cli_run_output_dir_validation",
-    "cli_check_destination",
+    "cli_setup_output_dirs",
+    "cli_setup_destination",
     "cli_resolve_path"
 ]
 
@@ -46,55 +46,82 @@ def cli_resolve_path(path: Union[bytes, str, Path, PathLike]) -> str:
 
 @abortable(step="Validating Output", reraise=True)
 def cli_err_dir_already_exists(folder: Union[str, PathLike]) -> bool:
-    """ Asks the user whether the build folder should be overwritten """
+    """
+    Asks the user whether the build folder should be overwritten
+
+    :returns: True if "yes" and False if "no"
+    """
     _input = console().input(
         f"[bright_yellow] > [bright_white]The {folder} "
-        "folder already exists. Overwrite data? (y\\N): "
-    ).lower() == 'y'
+        "folder already exists. Overwrite data? If no, a new directory will "
+        "be created (y\\N): "
+    ).lower() in ('y', 'yes')
     return _input
 
 
-def cli_check_destination(
-        output_type: str,
+def cli_setup_destination(
+        dir_name: str,
         default_path: Union[str, PathLike],
+        prompt_user: bool,
         overwrite: bool,
-        work_dir: Union[str, PathLike, Path] = os.getcwd()
-) -> str:
+        work_dir: Path = Path(os.getcwd())
+) -> Path:
     """
     Validates the destination and checks whether the specified output
-    folder is available. If the folder already exists it will show a prompt
-    to the user what should be done about the existing folder.
+    folder is available. If the folder already exists and prompt_user was
+    set to true it will show a prompt to the user what should be done
+    about the existing folder.
 
+    It will not overwrite the data per default
+
+    :param dir_name: The name of the directory
+    :param default_path: The default path/destination where the directory
+     should exist
+    :param prompt_user: If set to True, it will prompt the user in case the
+     folder already exists
+    :param overwrite: If set to True, it will always overwrite the data, even
+     if prompt_user is set to True
+    :param work_dir: The working directory where the folder should be created.
     :returns: The path to the folder
     """
     output = default_path
     if not os.path.exists(output):
+        # create and done!
         os.mkdir(output)
     elif len(os.listdir(output)) > 0:
         # If the overwrite is set to False then a prompt will appear
-        if overwrite is False:
-            overwrite = cli_err_dir_already_exists(output_type)
+        if prompt_user and not overwrite:
+            ret: bool = cli_err_dir_already_exists(dir_name)
+        else:
+            ret: bool = False
 
-        if overwrite:
+        # if the user said yes it should be overwritten
+        # if no prompt was asked default to
+        if overwrite or ret or not prompt_user:
+            # removing everything and creating it again
             shutil.rmtree(output)
             os.mkdir(output)
         else:
+            # create a directory that does not match this name by creating a
+            # unique number identifier for it
             counter = 2
-            while os.path.exists(f"{work_dir}/{output_type}_{counter}"):
+            while os.path.exists(work_dir / f"{dir_name}_{counter}"):
                 counter += 1
-            output = f"{work_dir}/{output_type}_{counter}"
+            output = work_dir / f"{dir_name}_{counter}"
             os.mkdir(output)
-    return output
+
+    return Path(output).resolve()
 
 
-def cli_run_output_dir_validation(
+def cli_setup_output_dirs(
         overwrite_build: bool,
         overwrite_dist: bool,
         work_dir: Union[str, PathLike, Path] = os.getcwd()
-) -> Tuple[str, str]:
+) -> Tuple[Path, Path]:
     """
-    Validates whether the output folder /build/ and /dist/ can be used and
-    creates a prompt if one of the folder already exists
+    Sets up the output directories, by validating whether the output folder
+    /build/ and /dist/ can be used and creates a prompt if one of the folder
+    already exists
 
     :param overwrite_build: If set to True if a build folder already exists
      it will be deleted and overwritten
@@ -104,15 +131,17 @@ def cli_run_output_dir_validation(
     """
     from parac import const
 
-    build_path = cli_check_destination(
+    build_path = cli_setup_destination(
         "build",
         default_path=const.DEFAULT_BUILD_PATH,
+        prompt_user=True,
         overwrite=overwrite_build,
         work_dir=work_dir
     )
-    dist_path = cli_check_destination(
+    dist_path = cli_setup_destination(
         "dist",
         default_path=const.DEFAULT_DIST_PATH,
+        prompt_user=True,
         overwrite=overwrite_dist,
         work_dir=work_dir
     )
