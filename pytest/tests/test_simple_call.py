@@ -12,7 +12,6 @@ import os
 from parac import (FileNotFoundError as ParaFileNotFoundError,
                    SEPARATOR as SEP, UserInputError)
 from parac.logging import set_avoid_print_banner_overwrite
-from parac.compiler import ParacCompiler
 from . import (add_folder, overwrite_builtin_input, reset_input,
                create_test_file, BASE_TEST_PATH)
 
