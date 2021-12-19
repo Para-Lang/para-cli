@@ -14,21 +14,9 @@
 
 Command Line Interface Implementation for the Para-C programming language
 
-*For proper documentation and info on Para-C visit the main repo [here](https://github.com/Para-C/Para-C). 
-This also includes issues or requesting changes. These should be done on the main branch, while the issues
-here will be maintainers-only*
+## Docs
 
-## Commands
-*Commands displayed are mostly only partly implemented*
-
-| Name                   | Description                                                                                      |
-|------------------------|--------------------------------------------------------------------------------------------------|
-| ``parac compile``      | Compiles a Para-C program to C or an executable.                                                 |
-| ``parac run``          | Compiles a Para-C program and runs it.                                                           |
-| ``parac c-init``       | Starts the CLI for the configuration of the C-compiler, which is required for running a program. |
-| ``parac syntax-check`` | Validates the syntax of a Para-C program and logs errors if needed. (Pre-Processor ignored)      |
-| ``parac analyse``      | Analyses a program and validates the syntax (Pre-Processor included - macros required)           |
-
+Our documentation can be found [here](https://para-c.readthedocs.io/en/latest/).
 
 ## Installation
 
@@ -45,7 +33,7 @@ python3 -m pip install -U parac-ext-cli==version
 
 ![License](https://img.shields.io/github/license/Para-C/Para-C?color=cyan)
 
-Copyright (C) 2021 [Nicolas Klatzer*](#legal-name-which-does-not-match-the-preferred-and-commonly-used-name-luna-klatzer).
+Copyright (C) 2021 Luna Klatzer
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -61,5 +49,3 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 See the [LICENSE](./LICENSE) for information on terms & conditions for usage.
-
-###### *Legal name, which does not match the preferred and commonly used name Luna Klatzer
