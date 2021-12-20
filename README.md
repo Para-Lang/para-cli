@@ -9,7 +9,7 @@
 
 [![Windows Test workflow](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-win.yml/badge.svg)](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-win.yml)
 [![MacOS Test workflow](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-macos.yml/badge.svg)](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-macos.yml)
-[![Linux Test & Coverage workflow](https://github.com/Para-C/Para-C-CLI/actions/workflows/cov-pytest.yml/badge.svg)](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-linux.yml)
+[![Pytest Linux & Coverage](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-linux.yml/badge.svg)](https://github.com/Para-C/Para-C-CLI/actions/workflows/pytest-linux.yml)
 [![codecov](https://codecov.io/gh/Para-C/Para-C-CLI/branch/main/graph/badge.svg?token=8I9XL1E7QR)](https://codecov.io/gh/Para-C/Para-C)
 
 Command Line Interface Implementation for the Para-C programming language
