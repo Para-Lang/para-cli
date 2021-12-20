@@ -47,5 +47,8 @@ setuptools.setup(
     ],
     include_package_data=True,
     python_requires='>=3.8',
-    install_requires=requirements
+    install_requires=requirements,
+    entry_points={
+        'console_scripts': ['parac=parac_ext_cli.__main__:cli_run'],
+    }
 )
