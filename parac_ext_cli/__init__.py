@@ -37,3 +37,9 @@ __release__ = f"{__code_name__} {__version__}"
 __copyright__ = "Luna Klatzer"
 
 from .__main__ import *
+
+# Importing colorama to enable colouring support for the console
+# as a backup option
+import colorama as lib_colorama
+
+lib_colorama.init(autoreset=True)

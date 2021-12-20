@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Automatic CLI installation on setup and addition to the path, so that the
+  script can be easily run right after installing `parac_ext_cli`.
 
 ### Changed
 - Renamed `cli_run_output_dir_validation()` to `cli_setup_output_dirs()`

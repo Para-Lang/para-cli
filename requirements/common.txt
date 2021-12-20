@@ -1,0 +1,7 @@
+# Contains requirements for all environments
+
+# Base requirements for the entire module
+colorama>=0.4.4
+click>=8.0.0
+rich>=10.0.0
+parac==0.1.dev6
