@@ -12,10 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- New file `logging.py` responsible for graphical logging onto the console
 
 ### Changed
+- Renamed module to `para_ext_cli` and renamed all prefixes to `para`
+- Moved most of the graphical functionality from `para.logging` to 
+  `para_ext_cli.logging` to allow both graphical and default logging.
 
 ### Removed
+- Unneeded command `para c-init`, as 
 
 ## [v0.1.dev6]
 
@@ -31,6 +36,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved CLI from the main repo to its independent repo. Changes will appear
   from this version on here, as well as on the main repo.
 
-[unreleased]: https://github.com/Para-C/Para-C/compare/v0.1.dev6...dev
-[v0.1.dev6]: https://github.com/Para-C/Para-C/compare/v0.1.dev5...v0.1.dev6
-[v0.1.dev5]: https://github.com/Para-C/Para-C-CLI/tag/v0.1.dev5
+[unreleased]: https://github.com/Para-Lang/Para/compare/v0.1.dev6...dev
+[v0.1.dev6]: https://github.com/Para-Lang/Para/compare/v0.1.dev5...v0.1.dev6
+[v0.1.dev5]: https://github.com/Para-Lang/Para-CLI/tag/v0.1.dev5

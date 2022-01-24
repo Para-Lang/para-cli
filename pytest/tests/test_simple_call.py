@@ -5,23 +5,23 @@ try:
 except ImportError as e:
     raise ImportError("Failed to locate parent module 'parac'") from e
 
-from parac_ext_cli import cli_run_output_dir_validation, cli_create_process
-from pathlib import Path
 import pytest
 import os
-from parac import (FileNotFoundError as ParaFileNotFoundError,
-                   SEPARATOR as SEP, UserInputError)
-from parac.logging import set_avoid_print_banner_overwrite
-from parac.compiler import ParacCompiler
+from pathlib import Path
+from parac import InFileNotFoundError as ParaFileNotFoundError, UserInputError
+
+from para_ext_cli import cli_run_output_dir_validation, cli_create_process
+from para_ext_cli.logging import cli_set_avoid_print_banner_overwrite
+
 from . import (add_folder, overwrite_builtin_input, reset_input,
                create_test_file, BASE_TEST_PATH)
 
 LOG_PATH = 'para.log'
 ENCODING = 'utf-8'
-main_file_path = f"{BASE_TEST_PATH}{SEP}test_files{SEP}entry.para"
+main_file_path = BASE_TEST_PATH / "test_files" / "main.para"
 
 # Avoiding printing the banner (CLI)
-set_avoid_print_banner_overwrite(True)
+cli_set_avoid_print_banner_overwrite(True)
 
 
 class TestCLISetup:
