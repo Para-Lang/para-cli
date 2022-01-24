@@ -3,16 +3,17 @@
 import time
 import asyncio
 from pathlib import Path
-from typing import Union, Optional, NoReturn
+from typing import Union, NoReturn
 import click
 import colorama
 import logging
 from os import PathLike
 from rich.progress import Progress
 
-from parac.exceptions import InvalidArgumentsError, FailedToProcessError
-from parac.compiler import (ParacCompiler, ProgramCompilationProcess,
-                            BasicProcess, FinishedProcess)
+from paralang import __version__, __title__
+from paralang.exceptions import FailedToProcessError
+from paralang.compiler import (ProgramCompilationProcess, ParaCompiler,
+                               BasicProcess, FinishedProcess)
 
 from .logging import (cli_get_rich_console as console, cli_print_result_banner,
                       cli_create_prompt, cli_format_default,
@@ -33,7 +34,7 @@ __all__ = [
 ]
 
 colorama.init(autoreset=True)
-RUNTIME_COMPILER: ParacCompiler = ParacCompiler()
+RUNTIME_COMPILER: ParaCompiler = ParaCompiler()
 
 
 @cli_abortable(step="Setup", reraise=True, preserve_exception=True)
@@ -333,7 +334,6 @@ class ParaCLI:
 
         out = console()
         if version:
-            from parac import __version__, __title__
             return out.print(' '.join([__title__.title(), __version__]))
         else:
             cli_print_init_banner()

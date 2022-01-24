@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New file `logging.py` responsible for graphical logging onto the console
 
 ### Changed
-- Renamed module to `para_ext_cli` and renamed all prefixes to `para`
+- Renamed module `parac_ext_cli` to `paralang_cli` and renamed all prefixes 
+  to `para`
 - Moved most of the graphical functionality from `para.logging` to 
   `para_ext_cli.logging` to allow both graphical and default logging.
 

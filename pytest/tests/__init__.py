@@ -4,7 +4,7 @@ import os
 import shutil
 from pathlib import Path
 
-from para_ext_cli import logging
+from paralang_cli import logging
 
 logging.cli_init_rich_console()
 prev_input = logging.cli_get_rich_console().input

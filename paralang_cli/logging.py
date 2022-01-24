@@ -12,7 +12,7 @@ from pathlib import Path
 from types import FunctionType, TracebackType
 from typing import Optional, Callable, Tuple, Type, Union, Literal
 
-from parac import const
+from paralang import const
 from rich.console import Console
 from rich.theme import Theme
 

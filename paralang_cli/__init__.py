@@ -24,7 +24,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__title__ = "para_ext_cli"
+__title__ = "paralang_cli"
 __description__ = "Command Line Interface Implementation for the Para-C " \
                   "programming language"
 __url__ = "https://github.com/Para-Lang/Para-CLI/"

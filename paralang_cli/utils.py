@@ -1,5 +1,5 @@
 # coding=utf-8
-""" Utilities for the para_ext_cli module """
+""" Utilities for the paralang_cli module """
 import functools
 import os
 import shutil
@@ -8,9 +8,9 @@ from os import PathLike
 from pathlib import Path
 from typing import Union, Tuple
 
-from parac import (UserInputError, InternalError, InterruptError,
-                   ParacCompilerError)
-from parac.util import decode_if_bytes, escape_ansi
+from paralang import (UserInputError, InternalError, InterruptError,
+                      ParaCompilerError)
+from paralang.util import decode_if_bytes, escape_ansi
 
 from .logging import cli_get_rich_console as console, cli_log_traceback, \
     cli_print_abort_banner
@@ -95,7 +95,7 @@ def cli_run_output_dir_validation(
      it will be deleted and overwritten
     :param work_dir: Work Directory that should be used for the check
     """
-    from parac import const
+    from paralang import const
 
     build_path = cli_check_destination(
         "build",
@@ -219,7 +219,7 @@ def cli_abortable(
                     else:
                         raise InterruptError(exc=e) from e
 
-                except ParacCompilerError as e:
+                except ParaCompilerError as e:
                     if not RUNTIME_COMPILER.log_initialised:
                         RUNTIME_COMPILER.init_cli_logging()
 

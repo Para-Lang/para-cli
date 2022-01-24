@@ -8,10 +8,10 @@ except ImportError as e:
 import pytest
 import os
 from pathlib import Path
-from parac import InFileNotFoundError as ParaFileNotFoundError, UserInputError
+from paralang import InFileNotFoundError as ParaFileNotFoundError, UserInputError
 
-from para_ext_cli import cli_run_output_dir_validation, cli_create_process
-from para_ext_cli.logging import cli_set_avoid_print_banner_overwrite
+from paralang_cli import cli_run_output_dir_validation, cli_create_process
+from paralang_cli.logging import cli_set_avoid_print_banner_overwrite
 
 from . import (add_folder, overwrite_builtin_input, reset_input,
                create_test_file, BASE_TEST_PATH)
