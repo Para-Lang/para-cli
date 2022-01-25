@@ -4,12 +4,10 @@ import os
 import setuptools
 from pathlib import Path
 
-SRC_PATH = Path(os.path.dirname(os.path.realpath(__file__))).resolve()
-
-with open(SRC_PATH / "README.md", "r", encoding='utf-8') as file:
+with open("./README.md", "r", encoding='utf-8') as file:
     long_description = file.read()
 
-with open(SRC_PATH / "requirements.txt", encoding='utf-8') as file:
+with open("./requirements.txt", encoding='utf-8') as file:
     requirements = file.read()
 
 setuptools.setup(
@@ -19,8 +17,8 @@ setuptools.setup(
     author_email="luna.klatzer@gmail.com",
     maintainer="Luna Klatzer",
     maintainer_email="luna.klatzer@gmail.com",
-    description="Command Line Interface Implementation for the Para-C "
-                "programming language",
+    description="Command Line Interface Implementation for the Para "
+                "programming compiler",
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="GNU GENERAL PUBLIC LICENSE v3.0",

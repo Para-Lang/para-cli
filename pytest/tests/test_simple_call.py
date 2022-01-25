@@ -1,14 +1,10 @@
 # coding=utf-8
-""" Simple testing calling the Para-C CLI """
-try:
-    import parac
-except ImportError as e:
-    raise ImportError("Failed to locate parent module 'parac'") from e
-
+""" Simple testing calling the Para CLI """
 import pytest
 import os
 from pathlib import Path
-from paralang import InFileNotFoundError as ParaFileNotFoundError, UserInputError
+from paralang import InFileNotFoundError as ParaFileNotFoundError, \
+    UserInputError
 
 from paralang_cli import cli_run_output_dir_validation, cli_create_process
 from paralang_cli.logging import cli_set_avoid_print_banner_overwrite
@@ -81,7 +77,11 @@ class TestCLISetup:
         d_path: Path = add_folder("dist")
 
         p = cli_create_process(
-            main_file_path, ENCODING, LOG_PATH, b_path, d_path
+            file=main_file_path,
+            log_path=LOG_PATH,
+            encoding=ENCODING,
+            build_path=b_path,
+            dist_path=d_path
         )
 
         assert p.build_path == b_path
@@ -98,8 +98,8 @@ class TestCLISetup:
         try:
             p = cli_create_process(
                 file=path,
-                encoding=ENCODING,
                 log_path=LOG_PATH,
+                encoding=ENCODING,
                 build_path=b_path,
                 dist_path=d_path
             )
@@ -118,8 +118,8 @@ class TestCLISetup:
         try:
             p = cli_create_process(
                 file=path,
-                encoding=ENCODING,
                 log_path=LOG_PATH,
+                encoding=ENCODING,
                 build_path=b_path,
                 dist_path=d_path
             )

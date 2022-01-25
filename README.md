@@ -1,16 +1,16 @@
 ![](img/parac-banner.png)
 
-# Para-C CLI
+# Para CLI
 [![Build](https://img.shields.io/github/workflow/status/Para-Lang/Para/CodeQL?logo=github)](https://github.com/Para-Lang/Para-CLI/actions/workflows/codeql-analysis.yml)
-[![Open Para-C issues](https://img.shields.io/github/issues/Para-C/Para-C)](https://github.com/Para-Lang/Para/issues)
+[![Open Para issues](https://img.shields.io/github/issues/Para-Lang/Para)](https://github.com/Para-Lang/Para/issues)
 [![PyPI version](https://badge.fury.io/py/parac-ext-cli.svg)](https://badge.fury.io/py/parac-ext-cli)
 [![Documentation Status](https://readthedocs.org/projects/para-c/badge/?version=latest)](https://para-c.readthedocs.io/en/latest/?badge=latest)
-[![License](https://img.shields.io/github/license/Para-C/Para-C-CLI?color=cyan)](https://github.com/Para-Lang/Para-CLI/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/Para-Lang/Para-CLI?color=cyan)](https://github.com/Para-Lang/Para-CLI/blob/main/LICENSE)
 
 [![Windows Test workflow](https://github.com/Para-Lang/Para-CLI/actions/workflows/pytest-win.yml/badge.svg)](https://github.com/Para-Lang/Para-CLI/actions/workflows/pytest-win.yml)
 [![MacOS Test workflow](https://github.com/Para-Lang/Para-CLI/actions/workflows/pytest-macos.yml/badge.svg)](https://github.com/Para-Lang/Para-CLI/actions/workflows/pytest-macos.yml)
 [![Linux Test & Coverage workflow](https://github.com/Para-Lang/Para-CLI/actions/workflows/pytest-linux.yml/badge.svg)](https://github.com/Para-Lang/Para-CLI/actions/workflows/pytest-linux.yml)
-[![codecov](https://codecov.io/gh/Para-Lang/Para-CLI/branch/main/graph/badge.svg?token=8I9XL1E7QR)](https://codecov.io/gh/Para-C/Para-C)
+[![codecov](https://codecov.io/gh/Para-Lang/Para-CLI/branch/main/graph/badge.svg?token=8I9XL1E7QR)](https://codecov.io/gh/Para-Lang/Para)
 
 Command Line Interface Implementation for the Para-C programming language
 
@@ -31,7 +31,7 @@ python3 -m pip install -U parac-ext-cli==version
 
 ## Copyright and License
 
-![License](https://img.shields.io/github/license/Para-C/Para-C?color=cyan)
+![License](https://img.shields.io/github/license/Para-Lang/Para?color=cyan)
 
 Copyright (C) 2021 Luna Klatzer
 

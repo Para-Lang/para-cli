@@ -1,9 +1,10 @@
 # coding=utf-8
 """ Main file of the Para Compiler CLI """
+import os
 import time
 import asyncio
 from pathlib import Path
-from typing import Union, NoReturn
+from typing import Union, NoReturn, List
 import click
 import colorama
 import logging
@@ -12,7 +13,7 @@ from rich.progress import Progress
 
 from paralang import __version__, __title__
 from paralang.exceptions import FailedToProcessError
-from paralang.compiler import (ProgramCompilationProcess, ParaCompiler,
+from paralang.compiler import (CompilationProcess, ParaCompiler,
                                BasicProcess, FinishedProcess)
 
 from .logging import (cli_get_rich_console as console, cli_print_result_banner,
@@ -39,12 +40,12 @@ RUNTIME_COMPILER: ParaCompiler = ParaCompiler()
 
 @cli_abortable(step="Setup", reraise=True, preserve_exception=True)
 def cli_create_process(
-        file: Union[str, PathLike, Path],
+        files: List[Union[str, bytes, PathLike, Path]],
+        log_path: Union[str, bytes, PathLike, Path],
         encoding: str,
-        log_path: Union[str, PathLike, Path],
-        build_path: Union[str, PathLike, Path],
-        dist_path: Union[str, PathLike, Path]
-) -> ProgramCompilationProcess:
+        build_path: Union[str, bytes, PathLike, Path],
+        dist_path: Union[str, bytes, PathLike, Path]
+) -> CompilationProcess:
     """
     Creates a compilation process, which can be used for compiling Para code
     and returns it.
@@ -53,11 +54,9 @@ def cli_create_process(
     if not RUNTIME_COMPILER.log_initialised:
         RUNTIME_COMPILER.init_cli_logging(log_path)
 
-    # Resolving path and stripping whitespaces
-    file: str = cli_resolve_path(file).strip()
-    build_path: str = cli_resolve_path(build_path).strip()
-    dist_path: str = cli_resolve_path(dist_path).strip()
-    return ProgramCompilationProcess(file, encoding, build_path, dist_path)
+    return CompilationProcess(
+        files, os.getcwd(), encoding, build_path, dist_path
+    )
 
 
 def create_basic_process(
@@ -76,7 +75,7 @@ def create_basic_process(
     return BasicProcess(file, encoding)
 
 
-async def run_process(p: ProgramCompilationProcess) -> FinishedProcess:
+async def run_process(p: CompilationProcess) -> FinishedProcess:
     """
     Runs the process and returns the finished compilation process
     Calls p.compile(), adds additional formatting and returns the result
@@ -88,7 +87,7 @@ async def run_process(p: ProgramCompilationProcess) -> FinishedProcess:
 
 
 async def cli_run_process_with_logging(
-        p: ProgramCompilationProcess
+        p: CompilationProcess
 ) -> FinishedProcess:
     """ Runs the compilation process with console logs and formatting """
     finished_process = None

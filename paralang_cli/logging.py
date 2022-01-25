@@ -112,7 +112,7 @@ def cli_get_rich_console() -> Union[Console, None]:
 
 class ParaCLIStreamHandler(StreamHandler):
     """
-    Specific Logging Stream Handler for Para-C designed to implement rich
+    Specific Logging Stream Handler for Para designed to implement rich
     """
 
     def __init__(self, *args, **kwargs):
@@ -157,7 +157,7 @@ logger = logging.getLogger(__name__)
 
 class ParaCLIFileHandler(logging.FileHandler):
     """
-    Default FileHandler for the logging file handling in the Para-C compiler
+    Default FileHandler for the logging file handling in the Para compiler
     """
 
     def __init__(
@@ -193,7 +193,7 @@ class ParaCLIFileHandler(logging.FileHandler):
 class ParaCLIFormatter(logging.Formatter):
     """
     Default Formatter class for the custom formatted logging output of the
-    Para-C compiler
+    Para compiler
     """
     level_formatting = {
         logging.CRITICAL: ''.join([
@@ -242,7 +242,7 @@ class ParaCLIFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord):
         """
         Class specific formatter function to add colouring
-        and Para-C specific formatting
+        and Para specific formatting
         """
         format_orig = getattr(self._style, '_fmt')
 
@@ -363,7 +363,7 @@ def cli_print_init_banner() -> None:
     if OVERWRITE_AVOID_PRINT_BANNER:
         return cli_get_rich_console().print("\n", end="")
 
-    base_str = f"Para-C Compiler | {__version__} | Docs: para-c.readthedocs.io"
+    base_str = f"Para Compiler | {__version__} | Docs: para-c.readthedocs.io"
 
     cli_get_rich_console().rule(style="bright_white rule.line")
     cli_get_rich_console().print(
