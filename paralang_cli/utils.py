@@ -220,7 +220,7 @@ def cli_abortable(
                         raise InterruptError(exc=e) from e
 
                 except ParaCompilerError as e:
-                    if not RUNTIME_COMPILER.log_initialised:
+                    if not RUNTIME_COMPILER.is_cli_logger_ready:
                         RUNTIME_COMPILER.init_cli_logging()
 
                     cli_log_traceback(
@@ -234,7 +234,7 @@ def cli_abortable(
                         raise InterruptError(exc=e) from e
 
                 except Exception as e:
-                    if not RUNTIME_COMPILER.log_initialised:
+                    if not RUNTIME_COMPILER.is_cli_logger_ready:
                         RUNTIME_COMPILER.init_cli_logging()
 
                     if preserve_exception:

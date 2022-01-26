@@ -77,15 +77,12 @@ class TestCLISetup:
         d_path: Path = add_folder("dist")
 
         p = cli_create_process(
-            file=main_file_path,
+            files=[main_file_path],
             log_path=LOG_PATH,
-            encoding=ENCODING,
-            build_path=b_path,
-            dist_path=d_path
+            encoding=ENCODING
         )
-
-        assert p.build_path == b_path
-        assert p.dist_path == d_path
+        assert len(p.files) == 1
+        assert p.encoding == ENCODING
 
     @pytest.mark.parametrize(
         "path", [
@@ -97,13 +94,12 @@ class TestCLISetup:
         d_path: Path = add_folder("dist")
         try:
             p = cli_create_process(
-                file=path,
+                files=[path],
                 log_path=LOG_PATH,
-                encoding=ENCODING,
-                build_path=b_path,
-                dist_path=d_path
+                encoding=ENCODING
             )
-            assert False
+            assert len(p.files) == 1
+            assert p.encoding == ENCODING
         except ParaFileNotFoundError as e:
             ...
 
@@ -117,12 +113,11 @@ class TestCLISetup:
         d_path: Path = add_folder("dist")
         try:
             p = cli_create_process(
-                file=path,
+                files=[path],
                 log_path=LOG_PATH,
-                encoding=ENCODING,
-                build_path=b_path,
-                dist_path=d_path
+                encoding=ENCODING
             )
-            assert False
+            assert len(p.files) == 1
+            assert p.encoding == ENCODING
         except UserInputError:
             ...

@@ -14,9 +14,9 @@ from rich.progress import Progress
 from paralang import __version__, __title__
 from paralang.exceptions import FailedToProcessError
 from paralang.compiler import (CompilationProcess, ParaCompiler,
-                               BasicProcess, FinishedProcess)
+                               Process, CompileResult)
 
-from .logging import (cli_get_rich_console as console, cli_print_result_banner,
+from .logging import (cli_get_rich_console as get_console, cli_print_result_banner,
                       cli_create_prompt, cli_format_default,
                       cli_init_rich_console, cli_print_init_banner)
 from .utils import (cli_run_output_dir_validation, cli_resolve_path,
@@ -43,19 +43,18 @@ def cli_create_process(
         files: List[Union[str, bytes, PathLike, Path]],
         log_path: Union[str, bytes, PathLike, Path],
         encoding: str,
-        build_path: Union[str, bytes, PathLike, Path],
-        dist_path: Union[str, bytes, PathLike, Path]
 ) -> CompilationProcess:
     """
     Creates a compilation process, which can be used for compiling Para code
     and returns it.
-    Activates logging on default
+
+    This will activate CLI logging and styling per default!
     """
-    if not RUNTIME_COMPILER.log_initialised:
+    if not RUNTIME_COMPILER.is_cli_logger_ready:
         RUNTIME_COMPILER.init_cli_logging(log_path)
 
     return CompilationProcess(
-        files, os.getcwd(), encoding, build_path, dist_path
+        files, os.getcwd(), encoding
     )
 
 
@@ -63,37 +62,52 @@ def create_basic_process(
         file: Union[str, PathLike],
         encoding: str,
         log_path: Union[str, PathLike]
-) -> BasicProcess:
+) -> Process:
     """
     Creates a basic process, which can be used for syntax validation and
     returns it.
-    Activates logging on default
+
+    This will activate CLI logging and styling per default!
     """
-    if not RUNTIME_COMPILER.log_initialised:
+    if not RUNTIME_COMPILER.is_cli_logger_ready:
         RUNTIME_COMPILER.init_cli_logging(log_path)
 
-    return BasicProcess(file, encoding)
+    return Process(file, encoding)
 
 
-async def run_process(p: CompilationProcess) -> FinishedProcess:
+async def run_process(p: CompilationProcess) -> CompileResult:
     """
     Runs the process and returns the finished compilation process
     Calls p.compile(), adds additional formatting and returns the result
+
+    This will activate CLI logging and styling per default!
     """
+    if not RUNTIME_COMPILER.is_cli_logger_ready:
+        RUNTIME_COMPILER.init_cli_logging(log_path)
+
     finished_process = await p.compile()
-    if RUNTIME_COMPILER.log_initialised:
-        cli_print_result_banner()
+    cli_print_result_banner()
+
     return finished_process
 
 
 async def cli_run_process_with_logging(
         p: CompilationProcess
-) -> FinishedProcess:
-    """ Runs the compilation process with console logs and formatting """
-    finished_process = None
+) -> CompileResult:
+    """
+    Runs the compilation process with console logs and formatting. This will
+    add a progress bar to the console as well, showing the progress of the
+    compilation.
+
+    This will activate CLI logging and styling per default!
+    """
+    if not RUNTIME_COMPILER.is_cli_logger_ready:
+        RUNTIME_COMPILER.init_cli_logging(log_path)
+
+    finished_process: Optional[CompileResult] = None
 
     # Some testing for now
-    with Progress(console=console(), refresh_per_second=30) as progress:
+    with Progress(console=get_console(), refresh_per_second=30) as progress:
         max_progress = 100
         current_progress = 0
         main_task = progress.add_task(
@@ -111,9 +125,8 @@ async def cli_run_process_with_logging(
                 progress.update(main_task, advance=p - current_progress)
                 current_progress = p
 
-    console().print("\n", end="")
-    if RUNTIME_COMPILER.log_initialised:
-        cli_print_result_banner()
+    get_console().print("\n", end="")
+    cli_print_result_banner()
     return finished_process
 
 
@@ -328,10 +341,10 @@ class ParaCLI:
         Either returns version or prints the init_banner of the Compiler
         """
         # If the console was not initialised yet, initialise it
-        if console() is None:
+        if get_console() is None:
             cli_init_rich_console()
 
-        out = console()
+        out = get_console()
         if version:
             return out.print(' '.join([__title__.title(), __version__]))
         else:
@@ -358,7 +371,7 @@ class ParaCLI:
             source: bool,
             executable: bool,
             debug: bool
-    ) -> FinishedProcess:
+    ) -> CompileResult:
         """
         CLI interface for the parac_compile command.
         Will create a compilation-process and run it
@@ -399,7 +412,7 @@ class ParaCLI:
             debug: bool
     ):
         """ Runs a syntax check on the specified file (imports excluded) """
-        if not RUNTIME_COMPILER.log_initialised:
+        if not RUNTIME_COMPILER.is_cli_logger_ready:
             RUNTIME_COMPILER.init_cli_logging(
                 log,
                 level=logging.DEBUG if debug else logging.INFO,
@@ -421,21 +434,21 @@ class ParaCLI:
         warnings = RUNTIME_COMPILER.stream_handler.warnings
         if errors == 0:
             cli_print_result_banner("Syntax Check")
-            console().print(
+            get_console().print(
                 "[bold bright_cyan]"
                 "Syntax check finished successfully"
                 "[/bold bright_cyan]"
             )
         else:
             cli_print_result_banner("Syntax Check", success=False)
-            console().print(
+            get_console().print(
                 "[bold yellow]"
                 "Syntax check detected "
                 f"{'an error' if errors == 1 else 'multiple errors'}"
                 "[/bold yellow]"
             )
 
-        console().print(
+        get_console().print(
             f"[bold yellow]{warnings} Warnings [/bold yellow]"
             f"[bold red]{errors} Errors[/bold red]"
         )
