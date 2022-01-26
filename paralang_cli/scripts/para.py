@@ -6,6 +6,7 @@ import click
 import colorama
 import logging
 
+import paralang
 from paralang import __version__, __title__
 from paralang.exceptions import FailedToProcessError
 from paralang.compiler import CompileResult
@@ -45,7 +46,12 @@ class ParaCLI:
 
         out = get_console()
         if version:
-            return out.print(' '.join([__title__, __version__]))
+            out.print(
+                ' '.join([
+                    "Para Compiler", paralang.__version__
+                ])
+            )
+            return
         else:
             cli_print_para_banner()
             out.print('')

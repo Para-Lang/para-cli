@@ -10,14 +10,14 @@ from typing import Union, Tuple, Optional, List
 
 from paralang import (UserInputError, InternalError, InterruptError,
                       ParaCompilerError)
-from paralang.compiler import CompilationProcess, CompileResult
+from paralang.compiler import CompileProcess, CompileResult
 from paralang.util import decode_if_bytes, escape_ansi
 from rich import get_console
 from rich.progress import Progress
 
 from . import RUNTIME_COMPILER
-from .logging import cli_get_rich_console as console, cli_log_traceback, \
-    cli_print_abort_banner, cli_print_result_banner
+from .logging import (cli_get_rich_console as console, cli_log_traceback,
+                      cli_print_abort_banner, cli_print_result_banner)
 
 __all__ = [
     "cli_err_dir_already_exists",
@@ -139,7 +139,7 @@ def cli_create_process(
         files: List[Union[str, bytes, PathLike, Path]],
         log_path: Union[str, bytes, PathLike, Path],
         encoding: str,
-) -> CompilationProcess:
+) -> CompileProcess:
     """
     Creates a compilation process, which can be used for compiling Para code
     and returns it.
@@ -149,14 +149,14 @@ def cli_create_process(
     if not RUNTIME_COMPILER.is_cli_logger_ready:
         RUNTIME_COMPILER.init_cli_logging(log_path)
 
-    return CompilationProcess(
+    return CompileProcess(
         files, os.getcwd(), encoding
     )
 
 
 @cli_abortable(step="Compilation", reraise=True, preserve_exception=True)
 async def cli_run_process(
-        p: CompilationProcess,
+        p: CompileProcess,
         log_path: Union[str, PathLike] = None
 ) -> CompileResult:
     """
@@ -175,7 +175,7 @@ async def cli_run_process(
 
 
 async def cli_run_process_with_logging(
-        p: CompilationProcess,
+        p: CompileProcess,
         log_path: Union[str, PathLike] = None
 ) -> CompileResult:
     """

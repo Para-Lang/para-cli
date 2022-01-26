@@ -29,7 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   logging in the main module `paralang`
 
 ### Removed
-- Unneeded command `para c-init`, as 
+- Unneeded command `para c-init`, as the configuration of the C compiler will
+  be done from now on using the tool `paraproj`, which will allow project-wide
+  configuration.
 
 ## [v0.1.dev6]
 
