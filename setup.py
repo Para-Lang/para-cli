@@ -45,5 +45,11 @@ setuptools.setup(
     ],
     include_package_data=True,
     python_requires='>=3.8',
-    install_requires=requirements
+    install_requires=requirements,
+    entry_points={
+        'console_scripts': [
+            'para = paralang_cli.scripts.para:cli_run',
+            'paraproj = paralang_cli.scripts.paraproj:cli_run'
+        ],
+    }
 )

@@ -1,5 +1,4 @@
 """ Graphical logging for the Para CLI """
-import json
 import logging
 import os
 import platform
@@ -9,7 +8,7 @@ import sys
 import traceback
 from logging import StreamHandler
 from pathlib import Path
-from types import FunctionType, TracebackType
+from types import TracebackType
 from typing import Optional, Callable, Tuple, Type, Union, Literal
 
 from paralang import const
@@ -27,7 +26,8 @@ __all__ = [
     "cli_get_rich_console",
     "cli_log_traceback",
     "cli_ansi_col",
-    "cli_print_init_banner",
+    "cli_print_para_banner",
+    "cli_print_paraproj_banner",
     "cli_print_abort_banner",
     "cli_print_log_banner",
     "cli_print_result_banner",
@@ -346,11 +346,12 @@ class TerminalANSIColor:
 cli_ansi_col = TerminalANSIColor()
 
 
-def cli_print_init_banner() -> None:
+def cli_print_para_banner() -> None:
     """
-    Creates the init screen string that can be printed
+    Prints the banner for the Para Compiler
 
-    Required init_rich_console to be called before it!
+    The rich console has to be initialised when using this function!
+    Call 'cli_init_rich_console' to initialise the rich console.
     """
     from . import __version__
 
@@ -363,7 +364,36 @@ def cli_print_init_banner() -> None:
     if OVERWRITE_AVOID_PRINT_BANNER:
         return cli_get_rich_console().print("\n", end="")
 
-    base_str = f"Para Compiler | {__version__} | Docs: para-c.readthedocs.io"
+    base_str = f"Para Compiler | {__version__} | Docs: para.readthedocs.io"
+
+    cli_get_rich_console().rule(style="bright_white rule.line")
+    cli_get_rich_console().print(
+        f"[bold bright_cyan]{base_str}[/bold bright_cyan]",
+        justify="center"
+    )
+    cli_get_rich_console().rule(style="bright_white rule.line")
+
+
+def cli_print_paraproj_banner() -> None:
+    """
+    Prints the banner for the Para Project Configuration
+
+    The rich console has to be initialised when using this function!
+    Call 'cli_init_rich_console' to initialise the rich console.
+    """
+    from . import __version__
+
+    if cli_get_rich_console() is None:
+        raise RuntimeError(
+            "Rich console was not initialised. Use init_rich_console to"
+            " utilise this function"
+        )
+
+    if OVERWRITE_AVOID_PRINT_BANNER:
+        return cli_get_rich_console().print("\n", end="")
+
+    base_str = f"Para Project Config Tool | {__version__} | " \
+               f"Docs: para.readthedocs.io"
 
     cli_get_rich_console().rule(style="bright_white rule.line")
     cli_get_rich_console().print(

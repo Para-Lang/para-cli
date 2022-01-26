@@ -4,7 +4,7 @@
 [![Build](https://img.shields.io/github/workflow/status/Para-Lang/Para/CodeQL?logo=github)](https://github.com/Para-Lang/Para-CLI/actions/workflows/codeql-analysis.yml)
 [![Open Para issues](https://img.shields.io/github/issues/Para-Lang/Para)](https://github.com/Para-Lang/Para/issues)
 [![PyPI version](https://badge.fury.io/py/parac-ext-cli.svg)](https://badge.fury.io/py/parac-ext-cli)
-[![Documentation Status](https://readthedocs.org/projects/para-c/badge/?version=latest)](https://para-c.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/para/badge/?version=latest)](https://para.readthedocs.io/en/latest/?badge=latest)
 [![License](https://img.shields.io/github/license/Para-Lang/Para-CLI?color=cyan)](https://github.com/Para-Lang/Para-CLI/blob/main/LICENSE)
 
 [![Windows Test workflow](https://github.com/Para-Lang/Para-CLI/actions/workflows/pytest-win.yml/badge.svg)](https://github.com/Para-Lang/Para-CLI/actions/workflows/pytest-win.yml)
@@ -16,7 +16,7 @@ Command Line Interface Implementation for the Para-C programming language
 
 ## Docs
 
-Our documentation can be found [here](https://para-c.readthedocs.io/en/latest/).
+Our documentation can be found [here](https://para.readthedocs.io/en/latest/).
 
 ## Installation
 

@@ -8,6 +8,9 @@ be used from a single function call of `cli_entry()`. This means the module
 itself will handle exiting the program, as well as managing the command-line
 arguments.
 
+If '__main__' is run directly this module will run on default the CLI and parse
+the command line arguments.
+
 Copyright (C) 2021 Luna Klatzer
 
 This program is free software: you can redistribute it and/or modify
@@ -38,3 +41,4 @@ __copyright__ = "Luna Klatzer"
 
 from .__main__ import *
 from .logging import *
+from . import scripts

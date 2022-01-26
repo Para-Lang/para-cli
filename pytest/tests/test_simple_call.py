@@ -6,7 +6,8 @@ from pathlib import Path
 from paralang import InFileNotFoundError as ParaFileNotFoundError, \
     UserInputError
 
-from paralang_cli import cli_run_output_dir_validation, cli_create_process
+from paralang_cli.utils import (cli_run_output_dir_validation,
+                                cli_create_process)
 from paralang_cli.logging import cli_set_avoid_print_banner_overwrite
 
 from . import (add_folder, overwrite_builtin_input, reset_input,

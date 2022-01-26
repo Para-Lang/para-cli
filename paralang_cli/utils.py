@@ -6,14 +6,18 @@ import shutil
 import sys
 from os import PathLike
 from pathlib import Path
-from typing import Union, Tuple
+from typing import Union, Tuple, Optional, List
 
 from paralang import (UserInputError, InternalError, InterruptError,
                       ParaCompilerError)
+from paralang.compiler import CompilationProcess, CompileResult
 from paralang.util import decode_if_bytes, escape_ansi
+from rich import get_console
+from rich.progress import Progress
 
+from . import RUNTIME_COMPILER
 from .logging import cli_get_rich_console as console, cli_log_traceback, \
-    cli_print_abort_banner
+    cli_print_abort_banner, cli_print_result_banner
 
 __all__ = [
     "cli_err_dir_already_exists",
@@ -22,8 +26,191 @@ __all__ = [
     "cli_resolve_path",
     "cli_keep_open_callback",
     "cli_abortable",
-    "cli_escape_ansi_args"
+    "cli_escape_ansi_args",
+    'cli_create_process',
+    'cli_run_process_with_logging',
 ]
+
+
+def cli_abortable(
+        _func=None,
+        *,
+        reraise: bool,
+        preserve_exception: bool = False,
+        abort_on_internal_errors: bool = False,
+        print_abort: bool = True,
+        step: str = "Process"
+):
+    """
+    Marks the function as abortable and adds traceback logging to it.
+
+    Raised InterruptError will close the program entirely!
+
+    :param _func: Function to apply the decorator
+    :param reraise: If set to True, any exception will be reraised. If False,
+     it will close the program and write the error onto the console.
+    :param preserve_exception: If set to True, the original exception will be
+     returned and not the wrapped exception using InternalError or
+     InterruptError
+    :param abort_on_internal_errors: If set to True when receiving an
+     InternalError it will treat it as a call for aborting the process. This
+     means it will stop the program and print the abort banner if print_abort
+     is True.
+    :param print_abort: If True, it will print the abort banner when closing
+    :param step: The step that should be passed onto print_abort_banner.
+     Only valid argument when print_abort is True
+    """
+
+    def _decorator(func):
+        @functools.wraps(func)
+        def _wrapper(*args, **kwargs):
+            def _handle_abort(print_out: bool):
+                if print_out:
+                    cli_print_abort_banner(step)
+                exit(1)
+
+            try:
+                from . import RUNTIME_COMPILER
+                try:
+                    return func(*args, **kwargs)
+                except InterruptError:
+                    _handle_abort(print_abort)
+
+                except KeyboardInterrupt as e:
+                    if preserve_exception:
+                        raise e
+                    else:
+                        raise InterruptError(exc=e) from e
+
+                except ParaCompilerError as e:
+                    if not RUNTIME_COMPILER.is_cli_logger_ready:
+                        RUNTIME_COMPILER.init_cli_logging()
+
+                    cli_log_traceback(
+                        level="critical",
+                        brief="Encountered unexpected exception while running",
+                        exc_info=sys.exc_info()
+                    )
+                    if preserve_exception:
+                        raise e
+                    else:
+                        raise InterruptError(exc=e) from e
+
+                except Exception as e:
+                    if not RUNTIME_COMPILER.is_cli_logger_ready:
+                        RUNTIME_COMPILER.init_cli_logging()
+
+                    if preserve_exception:
+                        raise e
+                    else:
+                        raise InternalError(
+                            "Encountered unexpected exception while running",
+                            exc=e
+                        ) from e
+
+            except Exception as e:
+                if abort_on_internal_errors and type(e) is InternalError:
+                    _handle_abort(print_abort)
+                elif reraise:
+                    raise e
+                else:
+                    _handle_abort(print_abort)
+
+        return _wrapper
+
+    if _func is None:
+        return _decorator
+    else:
+        return _decorator(_func)
+
+
+@cli_abortable(step="Validating Output", reraise=True)
+def cli_err_dir_already_exists(folder: Union[str, PathLike]) -> bool:
+    """ Asks the user whether the build folder should be overwritten """
+    _input = console().input(
+        f"[bright_yellow] > [bright_white]The {folder} "
+        "folder already exists. Overwrite data? (y\\N): "
+    ).lower() == 'y'
+    return _input
+
+
+@cli_abortable(step="Setup", reraise=True, preserve_exception=True)
+def cli_create_process(
+        files: List[Union[str, bytes, PathLike, Path]],
+        log_path: Union[str, bytes, PathLike, Path],
+        encoding: str,
+) -> CompilationProcess:
+    """
+    Creates a compilation process, which can be used for compiling Para code
+    and returns it.
+
+    This will activate CLI logging and styling per default!
+    """
+    if not RUNTIME_COMPILER.is_cli_logger_ready:
+        RUNTIME_COMPILER.init_cli_logging(log_path)
+
+    return CompilationProcess(
+        files, os.getcwd(), encoding
+    )
+
+
+@cli_abortable(step="Compilation", reraise=True, preserve_exception=True)
+async def cli_run_process(
+        p: CompilationProcess,
+        log_path: Union[str, PathLike] = None
+) -> CompileResult:
+    """
+    Runs the process and returns the finished compilation process
+    Calls p.compile(), adds additional formatting and returns the result
+
+    This will activate CLI logging and styling per default!
+    """
+    if not RUNTIME_COMPILER.is_cli_logger_ready:
+        RUNTIME_COMPILER.init_cli_logging(log_path)
+
+    finished_process = await p.compile()
+    cli_print_result_banner()
+
+    return finished_process
+
+
+async def cli_run_process_with_logging(
+        p: CompilationProcess,
+        log_path: Union[str, PathLike] = None
+) -> CompileResult:
+    """
+    Runs the compilation process with console logs and formatting. This will
+    add a progress bar to the console as well, showing the progress of the
+    compilation.
+
+    This will activate CLI logging and styling per default!
+    """
+    if not RUNTIME_COMPILER.is_cli_logger_ready:
+        RUNTIME_COMPILER.init_cli_logging(log_path)
+
+    finished_process: Optional[CompileResult] = None
+
+    # Some testing for now
+    with Progress(console=get_console(), refresh_per_second=30) as progress:
+        max_progress = 100
+        current_progress = 0
+        main_task = progress.add_task(
+            "[green]Processing...",
+            total=max_progress
+        )
+
+        async for p, status, level, end in p.compile_gen():
+            if end is not None:
+                finished_process = end
+                progress.update(main_task, advance=p - current_progress)
+            else:
+                RUNTIME_COMPILER.logger.log(level=level, msg=status)
+                progress.update(main_task, advance=p - current_progress)
+                current_progress = p
+
+    get_console().print("\n", end="")
+    cli_print_result_banner()
+    return finished_process
 
 
 def cli_resolve_path(path: Union[bytes, str, Path, PathLike]) -> str:
@@ -124,8 +311,8 @@ def cli_keep_open_callback(_func=None):
             # If keep_open is True -> the user passed --keep_open as an option
             # then the console will stay open until a key is pressed
             if keep_open:
-                console().print("\n\n", end="")
-                console().input("Press any key to close the process ...")
+                console().print("\n", end="")
+                console().input("Press any key to close the program ...")
                 console().print("")
             return r
 
@@ -167,105 +354,3 @@ def cli_escape_ansi_args(_func):
         return _decorator
     else:
         return _decorator(_func)
-
-
-def cli_abortable(
-        _func=None,
-        *,
-        reraise: bool,
-        preserve_exception: bool = False,
-        abort_on_internal_errors: bool = False,
-        print_abort: bool = True,
-        step: str = "Process"
-):
-    """
-    Marks the function as abortable and adds traceback logging to it.
-
-    Raised InterruptError will close the program entirely!
-
-    :param _func: Function to apply the decorator
-    :param reraise: If set to True, any exception will be reraised. If False,
-     it will close the program and write the error onto the console.
-    :param preserve_exception: If set to True, the original exception will be
-     returned and not the wrapped exception using InternalError or
-    InterruptError
-    :param abort_on_internal_errors: If set to True when receiving an
-     InternalError it will treat it as a call for aborting the process. This
-     means it will stop the program and print the abort banner if print_abort
-     is True.
-    :param print_abort: If True, it will print the abort banner when closing
-    :param step: The step that should be passed onto print_abort_banner.
-     Only valid argument when print_abort is True
-    """
-
-    def _decorator(func):
-        @functools.wraps(func)
-        def _wrapper(*args, **kwargs):
-            def _handle_abort(print_out: bool):
-                if print_out:
-                    cli_print_abort_banner(step)
-                exit(1)
-
-            try:
-                from . import RUNTIME_COMPILER
-                try:
-                    return func(*args, **kwargs)
-                except InterruptError:
-                    _handle_abort(print_abort)
-
-                except KeyboardInterrupt as e:
-                    if preserve_exception:
-                        raise e
-                    else:
-                        raise InterruptError(exc=e) from e
-
-                except ParaCompilerError as e:
-                    if not RUNTIME_COMPILER.is_cli_logger_ready:
-                        RUNTIME_COMPILER.init_cli_logging()
-
-                    cli_log_traceback(
-                        level="critical",
-                        brief="Encountered unexpected exception while running",
-                        exc_info=sys.exc_info()
-                    )
-                    if preserve_exception:
-                        raise e
-                    else:
-                        raise InterruptError(exc=e) from e
-
-                except Exception as e:
-                    if not RUNTIME_COMPILER.is_cli_logger_ready:
-                        RUNTIME_COMPILER.init_cli_logging()
-
-                    if preserve_exception:
-                        raise e
-                    else:
-                        raise InternalError(
-                            "Encountered unexpected exception while running",
-                            exc=e
-                        ) from e
-
-            except Exception as e:
-                if abort_on_internal_errors and type(e) is InternalError:
-                    _handle_abort(print_abort)
-                elif reraise:
-                    raise e
-                else:
-                    _handle_abort(print_abort)
-
-        return _wrapper
-
-    if _func is None:
-        return _decorator
-    else:
-        return _decorator(_func)
-
-
-@cli_abortable(step="Validating Output", reraise=True)
-def cli_err_dir_already_exists(folder: Union[str, PathLike]) -> bool:
-    """ Asks the user whether the build folder should be overwritten """
-    _input = console().input(
-        f"[bright_yellow] > [bright_white]The {folder} "
-        "folder already exists. Overwrite data? (y\\N): "
-    ).lower() == 'y'
-    return _input

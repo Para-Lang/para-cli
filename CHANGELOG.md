@@ -13,12 +13,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - New file `logging.py` responsible for graphical logging onto the console
+- New additional helper command `paraproj` for setting up and configuring a 
+  Para project, where unique commands may be run for compilation.
+- New submodule `paralang_cli.scripts` for containing the main CLI and side
+  CLI tools
+- Banner Print function `utils.cli_print_paraproj_banner()` for printing the
+  banner for the command `paraproj`
 
 ### Changed
-- Renamed module `parac_ext_cli` to `paralang_cli` and renamed all prefixes 
+- Renamed module `para_ext_cli` to `paralang_cli` and renamed all prefixes 
   to `para`
-- Moved most of the graphical functionality from `para.logging` to 
-  `para_ext_cli.logging` to allow both graphical and default logging.
+- Moved the graphical functions and classes from `para.logging` to 
+  `para_ext_cli.logging` to allow the usage of graphical logging only in 
+  combination with the CLI module. This also allows the usage of regular
+  logging in the main module `paralang`
 
 ### Removed
 - Unneeded command `para c-init`, as 
