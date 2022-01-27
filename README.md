@@ -16,19 +16,15 @@
 
 Command Line Interface Implementation for the Para-C programming language
 
-## Docs
-
-Our documentation can be found [here](https://para.readthedocs.io/en/latest/).
-
 ## Installation
 
 ```bash
-python3 -m pip install -U parac-ext-cli
+python3 -m pip install -U paralang-cli
 ```
 
 *With specific version*:
 ```bash
-python3 -m pip install -U parac-ext-cli==version
+python3 -m pip install -U paralang-cli==version
 ```
 
 ## Copyright and License
