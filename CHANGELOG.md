@@ -31,8 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Renamed module `para_ext_cli` to `paralang_cli` and renamed all prefixes 
   to `para`
-- Moved the graphical functions and classes from `para.logging` to 
-  `para_ext_cli.logging` to allow the usage of graphical logging only in 
+- Moved the graphical functions and classes from `parabase_cli.logging` to 
+  `paralang_cli.logging` to allow the usage of graphical logging only in 
   combination with the CLI module. This also allows the usage of regular
   logging in the main module `paralang_base`
 
