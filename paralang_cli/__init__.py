@@ -42,3 +42,9 @@ __copyright__ = "Luna Klatzer"
 from .__main__ import *
 from .logging import *
 from . import scripts
+
+# Importing colorama to enable colouring support for the console
+# as a backup option
+import colorama as lib_colorama
+
+lib_colorama.init(autoreset=True)
