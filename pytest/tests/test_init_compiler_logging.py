@@ -1,10 +1,11 @@
 # coding=utf-8
 """ Simple testing calling the Para CLI """
-from paralang.compiler import ParaCompiler
-from paralang.logging import log_msg
+import logging
 
-from paralang_cli import RUNTIME_COMPILER
+from paralang_base.compiler import ParaCompiler
 from paralang_cli.logging import ParaCLIFileHandler, ParaCLIStreamHandler
+
+logger = logging.getLogger(__name__)
 
 
 class TestCompilerLoggingSetup:
@@ -41,7 +42,7 @@ class TestCompilerLoggingSetup:
         compiler.init_cli_logging()
         compiler.logger.info("Logging info")
 
-    def test_log_msg_func(self):
+    def test_logger_func(self):
         compiler = ParaCompiler()
         compiler.init_cli_logging()
-        log_msg("info", "A simple test message")
+        logger.info("A simple test message")

@@ -11,7 +11,7 @@ with open("./requirements.txt", encoding='utf-8') as file:
     requirements = file.read()
 
 setuptools.setup(
-    name="paralang_cli",
+    name="paralang-cli",
     version="0.1.dev7",
     author="Luna Klatzer",
     author_email="luna.klatzer@gmail.com",

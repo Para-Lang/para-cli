@@ -9,7 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 *Note that Documentation changes should not appear here!*
 
-## [Unreleased]
+## Unreleased
+
+### Added
+
+### Changed
+
+### Removed
+
+## [v0.1.dev7] - 2022-01-27
 
 ### Added
 - New file `logging.py` responsible for graphical logging onto the console
@@ -26,14 +34,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved the graphical functions and classes from `para.logging` to 
   `para_ext_cli.logging` to allow the usage of graphical logging only in 
   combination with the CLI module. This also allows the usage of regular
-  logging in the main module `paralang`
+  logging in the main module `paralang_base`
 
 ### Removed
 - Unneeded command `para c-init`, as the configuration of the C compiler will
   be done from now on using the tool `paraproj`, which will allow project-wide
   configuration.
 
-## [v0.1.dev6]
+## [v0.1.dev6] - 2021-11-10
 
 ### Changed
 - Deleted the file `entry_cli.py` in the main repo, and moved the function
@@ -41,12 +49,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the main repo and module can only be run as module, and the CLI is a
   fully separate entity.
   
-## [v0.1.dev5]
+## [v0.1.dev5] - 2021-11-09
 
 ### Added
 - Moved CLI from the main repo to its independent repo. Changes will appear
   from this version on here, as well as on the main repo.
 
-[unreleased]: https://github.com/Para-Lang/Para/compare/v0.1.dev6...dev
-[v0.1.dev6]: https://github.com/Para-Lang/Para/compare/v0.1.dev5...v0.1.dev6
+[unreleased]: https://github.com/Para-Lang/Para-CLI/compare/v0.1.dev7...dev
+[v0.1.dev7]: https://github.com/Para-Lang/Para-CLI/compare/v0.1.dev6...v0.1.dev7
+[v0.1.dev6]: https://github.com/Para-Lang/Para-CLI/compare/v0.1.dev5...v0.1.dev6
 [v0.1.dev5]: https://github.com/Para-Lang/Para-CLI/tag/v0.1.dev5

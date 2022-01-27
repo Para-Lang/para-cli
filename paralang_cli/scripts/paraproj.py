@@ -2,7 +2,7 @@
 import time
 from typing import NoReturn
 import click
-import paralang
+import paralang_base
 from rich import get_console
 
 from .. import (cli_init_rich_console, cli_print_para_banner, __title__,
@@ -31,7 +31,7 @@ class ParaProjCLI:
             out.print(
                 ' '.join([
                     "Para Project Configuration Tool", __version__,
-                    "\nPara Compiler", paralang.__version__
+                    "\nPara Compiler", paralang_base.__version__
                 ])
             )
             return

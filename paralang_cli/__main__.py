@@ -1,6 +1,6 @@
 # coding=utf-8
 """ Entry file for the CLI - Runs the default 'para' CLI if called directly """
-from paralang.compiler import ParaCompiler
+from paralang_base.compiler import ParaCompiler
 
 
 __all__ = [

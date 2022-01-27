@@ -1,4 +1,4 @@
 colorama>=0.4.4
 click>=8.0.0
 rich>=10.0.0
-paralang>=0.1.dev7
+paralang_base>=0.1.dev7

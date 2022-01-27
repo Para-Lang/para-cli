@@ -11,7 +11,7 @@ from pathlib import Path
 from types import TracebackType
 from typing import Optional, Callable, Tuple, Type, Union, Literal
 
-from paralang import const
+from paralang_base import const
 from rich.console import Console
 from rich.theme import Theme
 

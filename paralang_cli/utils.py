@@ -8,10 +8,10 @@ from os import PathLike
 from pathlib import Path
 from typing import Union, Tuple, Optional, List
 
-from paralang import (UserInputError, InternalError, InterruptError,
+from paralang_base import (UserInputError, InternalError, InterruptError,
                       ParaCompilerError)
-from paralang.compiler import CompileProcess, CompileResult
-from paralang.util import decode_if_bytes, escape_ansi
+from paralang_base.compiler import CompileProcess, CompileResult
+from paralang_base.util import decode_if_bytes, escape_ansi
 from rich import get_console
 from rich.progress import Progress
 
@@ -282,7 +282,7 @@ def cli_run_output_dir_validation(
      it will be deleted and overwritten
     :param work_dir: Work Directory that should be used for the check
     """
-    from paralang import const
+    from paralang_base import const
 
     build_path = cli_check_destination(
         "build",

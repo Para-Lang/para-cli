@@ -6,10 +6,10 @@ import click
 import colorama
 import logging
 
-import paralang
-from paralang import __version__, __title__
-from paralang.exceptions import FailedToProcessError
-from paralang.compiler import CompileResult
+import paralang_base
+from paralang_base import __version__, __title__
+from paralang_base.exceptions import FailedToProcessError
+from paralang_base.compiler import CompileResult
 
 from ..__main__ import RUNTIME_COMPILER
 from ..logging import (cli_get_rich_console as get_console,
@@ -48,7 +48,7 @@ class ParaCLI:
         if version:
             out.print(
                 ' '.join([
-                    "Para Compiler", paralang.__version__
+                    "Para Compiler", paralang_base.__version__
                 ])
             )
             return
