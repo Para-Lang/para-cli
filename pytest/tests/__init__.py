@@ -1,14 +1,24 @@
 # coding=utf-8
 """ Init file for the core tests """
-
 import os
+import logging
 import shutil
 from pathlib import Path
-import parac
+from rich import get_console
 
-parac.logging.init_rich_console()
-prev_input = parac.logging.get_rich_console().input
-parac.logging.set_avoid_print_banner_overwrite(True)
+from paralang_cli import cli_get_rich_console
+from paralang_cli.logging import (cli_init_rich_console, cli_get_rich_console,
+                                  cli_set_avoid_print_banner_overwrite)
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('paralang_base')
+logger.setLevel(logging.DEBUG)
+
+cli_init_rich_console()
+cli_set_avoid_print_banner_overwrite(True)
+
+# prev default input function
+prev_input = cli_get_rich_console().input
 
 
 def resolve_test_path() -> Path:
@@ -36,13 +46,13 @@ BASE_TEST_PATH = resolve_test_path()
 
 def overwrite_builtin_func_input(overwrite: str) -> None:
     """ Overwrites the input with a lambda that returns the specified value """
-    getattr(parac.logging, 'output_console').input =\
+    cli_get_rich_console().input =\
         lambda *args, **kwargs: overwrite
 
 
 def reset_input() -> None:
     """ Resets the output method of the console object """
-    getattr(parac.logging, 'output_console').input = prev_input
+    cli_get_rich_console().input = prev_input
 
 
 def add_folder(folder_name: str) -> Path:
@@ -73,3 +83,8 @@ def create_test_file(folder_name: str, file_name: str) -> None:
     with open(BASE_TEST_PATH / folder_name / file_name, 'w+') as file:
         file.write("x")
     assert os.path.exists(BASE_TEST_PATH / folder_name / file_name)
+
+
+def overwrite_builtin_input(overwrite: str) -> None:
+    """ Overwrites the input with a lambda that returns the specified value """
+    cli_get_rich_console().input = lambda *args, **kwargs: overwrite

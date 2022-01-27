@@ -1,12 +1,15 @@
 # coding=utf-8
 """
 CLI Implementation of the parac module. This module provides the interface and
-commands for utilising the Para-C Compiler using the command line.
+commands for utilising the Para Compiler using the command line.
 
 This is not intended for direct code usage, since the module is structured to
 be used from a single function call of `cli_entry()`. This means the module
 itself will handle exiting the program, as well as managing the command-line
 arguments.
+
+If '__main__' is run directly this module will run on default the CLI and parse
+the command line arguments.
 
 Copyright (C) 2021 Luna Klatzer
 
@@ -24,19 +27,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__title__ = "parac_ext_cli"
-__description__ = "Command Line Interface Implementation for the Para-C " \
-                  "programming language"
-__url__ = "https://github.com/Para-C/Para-C-CLI/"
+__title__ = "paralang_cli"
+__description__ = "Command Line Interface Implementation for the Para " \
+                  "programming compiler"
+__url__ = "https://github.com/Para-Lang/Para-CLI/"
 __author__ = "Luna Klatzer"
 __author_email__ = "luna.klatzer@gmail.com"
 __license__ = "GNU GENERAL PUBLIC LICENSE v3.0"
-__version__ = "v0.1.dev6"
+__version__ = "v0.1.dev7"
 __code_name__ = ""
 __release__ = f"{__code_name__} {__version__}"
 __copyright__ = "Luna Klatzer"
 
 from .__main__ import *
+from .logging import *
+from . import scripts
 
 # Importing colorama to enable colouring support for the console
 # as a backup option

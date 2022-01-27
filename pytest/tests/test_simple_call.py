@@ -1,26 +1,24 @@
 # coding=utf-8
-""" Simple testing calling the Para-C CLI """
-try:
-    import parac
-except ImportError as e:
-    raise ImportError("Failed to locate parent module 'parac'") from e
-
-from parac_ext_cli import cli_setup_output_dirs, cli_create_process
-from pathlib import Path
-import pytest
+""" Simple testing calling the Para CLI """
 import os
-from parac import (FileNotFoundError as ParaFileNotFoundError,
-                   SEPARATOR as SEP, UserInputError)
-from parac.logging import set_avoid_print_banner_overwrite
-from . import (add_folder, overwrite_builtin_func_input, reset_input,
+from pathlib import Path
+
+import pytest
+from paralang_base import (InFileNotFoundError as ParaFileNotFoundError,
+                           UserInputError)
+from paralang_cli.logging import cli_set_avoid_print_banner_overwrite
+from paralang_cli.utils import (cli_run_output_dir_validation,
+                                cli_create_process)
+
+from . import (add_folder, overwrite_builtin_input, reset_input,
                create_test_file, BASE_TEST_PATH)
 
 LOG_PATH = 'para.log'
 ENCODING = 'utf-8'
-main_file_path = f"{BASE_TEST_PATH}{SEP}test_files{SEP}entry.para"
+main_file_path = BASE_TEST_PATH / "test_files" / "main.para"
 
 # Avoiding printing the banner (CLI)
-set_avoid_print_banner_overwrite(True)
+cli_set_avoid_print_banner_overwrite(True)
 
 
 class TestCLISetup:
@@ -36,8 +34,8 @@ class TestCLISetup:
         add_folder("build")
         create_test_file("build", "example.txt")
 
-        overwrite_builtin_func_input('True')
-        cli_setup_output_dirs(False, True, BASE_TEST_PATH)
+        overwrite_builtin_input('True')
+        cli_run_output_dir_validation(False, True, BASE_TEST_PATH)
         assert not os.path.exists(
             _ := str(BASE_TEST_PATH / "build_2" / "example.txt")
         ), _
@@ -47,8 +45,8 @@ class TestCLISetup:
 
         create_test_file("build", "example.txt")
 
-        overwrite_builtin_func_input('False')
-        cli_setup_output_dirs(True, True, BASE_TEST_PATH)
+        overwrite_builtin_input('False')
+        cli_run_output_dir_validation(True, True, BASE_TEST_PATH)
         assert not os.path.exists(
             _ := str(BASE_TEST_PATH / "build" / "example.txt")
         ), _
@@ -58,8 +56,8 @@ class TestCLISetup:
         add_folder("dist")
         create_test_file("dist", "example.txt")
 
-        overwrite_builtin_func_input('True')  # Overwrite data -> True
-        cli_setup_output_dirs(True, False, BASE_TEST_PATH)
+        overwrite_builtin_input('True')  # Overwrite data -> True
+        cli_run_output_dir_validation(True, False, BASE_TEST_PATH)
         assert not os.path.exists(
             _ := str(BASE_TEST_PATH / "dist_2" / "example.txt")
         ), _
@@ -68,8 +66,8 @@ class TestCLISetup:
         ), _
 
         create_test_file("dist", "example.txt")
-        overwrite_builtin_func_input('False')  # Overwrite data -> False
-        cli_setup_output_dirs(True, True, BASE_TEST_PATH)
+        overwrite_builtin_input('False')  # Overwrite data -> False
+        cli_run_output_dir_validation(True, True, BASE_TEST_PATH)
         assert not os.path.exists(
             _ := str(BASE_TEST_PATH / "dist" / "example.txt")
         ), _
@@ -80,11 +78,12 @@ class TestCLISetup:
         d_path: Path = add_folder("dist")
 
         p = cli_create_process(
-            main_file_path, ENCODING, LOG_PATH, b_path, d_path
+            files=[main_file_path],
+            log_path=LOG_PATH,
+            encoding=ENCODING
         )
-
-        assert p.build_path == b_path
-        assert p.dist_path == d_path
+        assert len(p.files) == 1
+        assert p.encoding == ENCODING
 
     @pytest.mark.parametrize(
         "path", [
@@ -96,13 +95,12 @@ class TestCLISetup:
         d_path: Path = add_folder("dist")
         try:
             p = cli_create_process(
-                file=path,
-                encoding=ENCODING,
+                files=[path],
                 log_path=LOG_PATH,
-                build_path=b_path,
-                dist_path=d_path
+                encoding=ENCODING
             )
-            assert False
+            assert len(p.files) == 1
+            assert p.encoding == ENCODING
         except ParaFileNotFoundError as e:
             ...
 
@@ -116,12 +114,11 @@ class TestCLISetup:
         d_path: Path = add_folder("dist")
         try:
             p = cli_create_process(
-                file=path,
-                encoding=ENCODING,
+                files=[path],
                 log_path=LOG_PATH,
-                build_path=b_path,
-                dist_path=d_path
+                encoding=ENCODING
             )
-            assert False
+            assert len(p.files) == 1
+            assert p.encoding == ENCODING
         except UserInputError:
             ...
