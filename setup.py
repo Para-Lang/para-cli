@@ -18,7 +18,7 @@ setuptools.setup(
     maintainer="Luna Klatzer",
     maintainer_email="luna.klatzer@gmail.com",
     description="Command Line Interface Implementation for the Para "
-                "programming compiler",
+                "compiler",
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="GNU GENERAL PUBLIC LICENSE v3.0",
